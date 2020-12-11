@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Java复习 | Leonlist's Blog</title><meta name="description" content="java学习，复习笔记"><meta name="keywords" content="Java"><meta name="author" content="Leonlist"><meta name="copyright" content="Leonlist"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/logo.jpg"><link rel="canonical" href="http://yoursite.com/2020/12/04/Java%E5%A4%8D%E4%B9%A0/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="Java复习"><meta property="og:url" content="http://yoursite.com/2020/12/04/Java%E5%A4%8D%E4%B9%A0/"><meta property="og:site_name" content="Leonlist's Blog"><meta property="og:description" content="java学习，复习笔记"><meta property="og:image" content="https://i.loli.net/2019/11/10/lP3rLNUBaGtSVzc.png"><meta property="article:published_time" content="2020-12-04T12:57:39.000Z"><meta property="article:modified_time" content="2020-12-04T14:48:46.803Z"><meta name="twitter:card" content="summary"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  bookmark: {
+    message_prev: 'Press',
+    message_next: 'to bookmark this page'
+  },
+  runtime: '',
+  last_push_date: {"zeroDay":"Today","suffix":"days ago"},
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+      const now = new Date()
+      const expiryDay = ttl * 86400000
+      const item = {
+        value: value,
+        expiry: now.getTime() + expiryDay,
+      }
+      localStorage.setItem(key, JSON.stringify(item))
+    },
+  
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-12-04 22:48:46'
+}</script><noscript><style type="text/css">
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="/img/logo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">33</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">15</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%88Java%E5%85%A5%E9%97%A8%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">第一章（Java入门）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%88%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%95%B0%E7%BB%84%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">第二章（基本数据类型与数组）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%88%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%81%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">第三章（运算符、表达式和语句）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%88%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">第四章（类与对象）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UML%E5%9B%BE"><span class="toc-number">4.1.</span> <span class="toc-text">UML图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%9B%E5%8C%96"><span class="toc-number">4.1.1.</span> <span class="toc-text">泛化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96"><span class="toc-number">4.1.2.</span> <span class="toc-text">依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E8%81%94"><span class="toc-number">4.1.3.</span> <span class="toc-text">关联</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E5%90%88"><span class="toc-number">4.1.4.</span> <span class="toc-text">聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E5%90%88"><span class="toc-number">4.1.5.</span> <span class="toc-text">组合</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%88%E5%AD%90%E7%B1%BB%E4%B8%8E%E7%BB%A7%E6%89%BF%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">第五章（子类与继承）</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2019/11/10/lP3rLNUBaGtSVzc.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Leonlist's Blog</a></span><span class="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Java复习</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-12-04T12:57:39.000Z" title="Created 2020-12-04 20:57:39">2020-12-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2020-12-04T14:48:46.803Z" title="Updated 2020-12-04 22:48:46">2020-12-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Study/">Study</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="第一章（Java入门）"><a href="#第一章（Java入门）" class="headerlink" title="第一章（Java入门）"></a>第一章（Java入门）</h1><ul>
+<li>Java程序的开发步骤：编写源文件——编译源文件——字节码——执行字节码（使用解释器）</li>
+<li>一个Java应用程序必须有一个类含有 <code>public static void main（String args[]）</code> 方法</li>
+<li>一个java源程序至多只能有一个公共类的定义。</li>
+<li>JDK提供的编译器：javac.exe</li>
+</ul>
+<h1 id="第二章（基本数据类型与数组）"><a href="#第二章（基本数据类型与数组）" class="headerlink" title="第二章（基本数据类型与数组）"></a>第二章（基本数据类型与数组）</h1><ul>
+<li>True,False,Null不是关键字</li>
+<li>char类型用单引号括起</li>
+<li>输入、输出数据：<code>Scanner reader=new Scanner(System.in);</code></li>
+<li>输入重定向：<code>File file = new File(“cost.txt&quot;);Scanner sc = new Scanner(file);</code></li>
+</ul>
+<h1 id="第三章（运算符、表达式和语句）"><a href="#第三章（运算符、表达式和语句）" class="headerlink" title="第三章（运算符、表达式和语句）"></a>第三章（运算符、表达式和语句）</h1><ul>
+<li><strong>instanceof</strong> <strong>运算符</strong>是二目运算符，左面的操作元是一个<strong>对象</strong>；右面是一个<strong>类</strong>。当左面的对象是右面的类或子类创建的对象时，该运算符运算的结果是true ，否则是false。</li>
+</ul>
+<h1 id="第四章（类与对象）"><a href="#第四章（类与对象）" class="headerlink" title="第四章（类与对象）"></a>第四章（类与对象）</h1><ul>
+<li><p><strong>面向对象程序设计</strong></p>
+<ul>
+<li>基本组成单位是类</li>
+<li>程序在运行时由类生成对象，对象是面向对象程序的核心</li>
+<li>对象之间通过发送消息进行通信，互相协作完成相应功能</li>
+</ul>
+</li>
+<li><p>类是组成Java源文件的基本元素,一个源文件是有若干个类组成的。</p>
+</li>
+<li>类体可以有两种重要的成员：成员变量和方法。</li>
+<li>成员变量分为实例变量和类变量。类变量被该类的所有对象共享；不同对象的实例变量互不相同。</li>
+<li>除构造方法外,其它方法分为实例方法和类方法。类方法不仅可以由该类的对象调用,也可以用类名调用；而实例方法必须由对象来调用。</li>
+<li>实例方法即可以操作实例变量也可以操作类变量，当对象调用实例方法时，方法中的成员变量就是指分配给该对象的成员变量，其中的实例变量和其它对象的不相同，即占有不同的内存空间；而类变量和其它对象的相同，即占有相的内存空间。类方法只能操作类变量，当对象调用类方法时，方法中的成员变量一定都是类变量，也就是说该对象和所有的对象共享类变量。</li>
+<li>在编写Java源文件时，可以使用import语句引入有包名的类；也可以使用静态导入引入有包名类的类变量。</li>
+<li><p>对象访问自己的变量以及调用方法受访问权限的限制。</p>
+</li>
+<li><p>访问控制符</p>
+<ul>
+<li><p>public: 任何其它类、对象只要可以看到这个类的话，那么它就可以存取变量的数据，或使用方法。</p>
+</li>
+<li><p>protected：同一类，同一包可以使用。不同包的类要使用，必须是该类的子类。</p>
+</li>
+<li>private： 不允许任何其他类存取和调用。 </li>
+<li>default： (前边没有修饰字的情况)在同一包中出现的类才可以直接使用它的数据和方法。</li>
+</ul>
+</li>
+<li><p>没定义构造器，每个类有一个默认的不带参数的构造器。定义自己的构造器之后，默认的构造器就不存在了。</p>
+</li>
+</ul>
+<h2 id="UML图"><a href="#UML图" class="headerlink" title="UML图"></a>UML图</h2><h3 id="泛化"><a href="#泛化" class="headerlink" title="泛化"></a><strong>泛化</strong></h3><p>表示类与类之间的继承关系，接口与接口之间的继承关系，或类对接口的实现关系。一般化的关系是从子类指向父类的，与继承或实现的方法相反。 </p>
+<p>（1）继承<br>继承表示是一个类（称为子类、子接口）继承另外的一个类（称为父类、父接口）的功能，并可以增加它自己的新功能的能力。</p>
+<p><strong>表示方法：</strong><br>继承使用<strong>空心三角形+实线</strong>表示。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/images/Java%E5%A4%8D%E4%B9%A0/5336514-dc3ac9dd64968b59.png" alt="img" style="zoom:67%;" /></p>
+<p>（2）实现<br>实现表示一个class类实现interface接口（可以是多个）的功能。<br><strong>表示方法：</strong><br>使用<strong>空心三角形+虚线</strong>表示</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/images/Java%E5%A4%8D%E4%B9%A0/5336514-2941b3300988ffe9.png" alt="img" style="zoom:67%;" /></p>
+<h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><p>对于两个相对独立的对象，当一个对象负责构造另一个对象的实例，或者依赖另一个对象的服务时，这两个对象之间主要体现为依赖关系。<br><strong>表示方法：</strong><br>依赖关系用<strong>虚线箭头</strong>表示。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/images/Java%E5%A4%8D%E4%B9%A0/5336514-823083d2d77916ae.png" alt="img" style="zoom:67%;" /></p>
+<h3 id="关联"><a href="#关联" class="headerlink" title="关联"></a>关联</h3><p>对于两个相对独立的对象，当一个对象的实例与另一个对象的一些特定实例存在固定的对应关系时，这两个对象之间为关联关系。<br><strong>表示方法：</strong><br>关联关系用<strong>实线箭头</strong>表示。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/images/Java%E5%A4%8D%E4%B9%A0/5336514-0b5f0d7612a7ca17.png" alt="img" style="zoom:67%;" /></p>
+<h3 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h3><p>表示一种弱的‘拥有’关系，即has-a的关系，体现的是A对象可以包含B对象，但B对象不是A对象的一部分。 <strong>两个对象具有各自的生命周期</strong>。<br><strong>表示方法：</strong><br>聚合关系用<strong>空心的菱形+实线箭头</strong>表示。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/images/Java%E5%A4%8D%E4%B9%A0/5336514-e63191f4e23f2ad9.png" alt="img" style="zoom:67%;" /></p>
+<h3 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h3><p>组合是一种强的‘拥有’关系，是一种contains-a的关系，体现了严格的部分和整体关系，<strong>部分和整体的生命周期一样</strong>。<br><strong>表示方法：</strong><br>组合关系用<strong>实心的菱形+实线箭头</strong>表示，还可以使用连线两端的数字表示某一端有几个实例。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/images/Java%E5%A4%8D%E4%B9%A0/5336514-dfb604bd1c4408d5.png" alt="img" style="zoom:67%;" /></p>
+<h1 id="第五章（子类与继承）"><a href="#第五章（子类与继承）" class="headerlink" title="第五章（子类与继承）"></a>第五章（子类与继承）</h1></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Leonlist</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/12/04/Java%E5%A4%8D%E4%B9%A0/">http://yoursite.com/2020/12/04/Java%E5%A4%8D%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2019/11/10/lP3rLNUBaGtSVzc.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/12/04/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%A6%82%E8%AE%BA%E5%A4%8D%E4%B9%A0/"><img class="prev-cover" data-lazy-src="https://i.loli.net/2019/11/10/rJbFpE65tmxPv7R.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">人工智能概论复习</div></div></a></div><div class="next-post pull-right"><a href="/2020/11/23/2020%E7%A5%A5%E4%BA%91%E6%9D%AF/"><img class="next-cover" data-lazy-src="https://i.loli.net/2019/11/10/xthHmnbdNerWOqP.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">2020祥云杯</div></div></a></div></nav></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 By Leonlist</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

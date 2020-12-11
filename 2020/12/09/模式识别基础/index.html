@@ -1,0 +1,307 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>模式识别基础 | Leonlist's Blog</title><meta name="description" content="前置知识特征值与特征向量设A是n阶方阵，如果存在常数\lambda及n维非零向量x，使得Ax&#x3D;\lambda x，则称\lambda是矩阵A的特征值，x是A属于特征值\lambda的特征向量。 如果把矩阵看作是运动，那么特征值就是运动的速度，特征向量就是运动的方向。 特征向量在一个矩阵的作用下作伸缩运动，伸缩的幅度由特征值确定。特征值大于1，所有属于此特征值的特征向量变长；特征值大于0小于1，特征"><meta name="keywords" content="模式识别基础"><meta name="author" content="Leonlist"><meta name="copyright" content="Leonlist"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/logo.jpg"><link rel="canonical" href="http://yoursite.com/2020/12/09/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB%E5%9F%BA%E7%A1%80/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="模式识别基础"><meta property="og:url" content="http://yoursite.com/2020/12/09/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB%E5%9F%BA%E7%A1%80/"><meta property="og:site_name" content="Leonlist's Blog"><meta property="og:description" content="前置知识特征值与特征向量设A是n阶方阵，如果存在常数\lambda及n维非零向量x，使得Ax&#x3D;\lambda x，则称\lambda是矩阵A的特征值，x是A属于特征值\lambda的特征向量。 如果把矩阵看作是运动，那么特征值就是运动的速度，特征向量就是运动的方向。 特征向量在一个矩阵的作用下作伸缩运动，伸缩的幅度由特征值确定。特征值大于1，所有属于此特征值的特征向量变长；特征值大于0小于1，特征"><meta property="og:image" content="https://i.loli.net/2019/11/10/T7Mu8Aod3egmC4Q.png"><meta property="article:published_time" content="2020-12-09T10:34:31.000Z"><meta property="article:modified_time" content="2020-12-09T12:14:13.081Z"><meta name="twitter:card" content="summary"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  bookmark: {
+    message_prev: 'Press',
+    message_next: 'to bookmark this page'
+  },
+  runtime: '',
+  last_push_date: {"zeroDay":"Today","suffix":"days ago"},
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+      const now = new Date()
+      const expiryDay = ttl * 86400000
+      const item = {
+        value: value,
+        expiry: now.getTime() + expiryDay,
+      }
+      localStorage.setItem(key, JSON.stringify(item))
+    },
+  
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-12-09 20:14:13'
+}</script><noscript><style type="text/css">
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="/img/logo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">33</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">15</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%80%BC%E4%B8%8E%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F"><span class="toc-number">1.1.</span> <span class="toc-text">特征值与特征向量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E8%AE%BA"><span class="toc-number">2.</span> <span class="toc-text">引论</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">2.1.</span> <span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95"><span class="toc-number">2.1.1.</span> <span class="toc-text">模式识别的基本方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">统计模式识别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%A5%E6%B3%95%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB"><span class="toc-number">2.1.1.2.</span> <span class="toc-text">句法模式识别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E7%B3%8A%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB"><span class="toc-number">2.1.1.3.</span> <span class="toc-text">模糊模式识别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%B3%95"><span class="toc-number">2.1.1.4.</span> <span class="toc-text">人工神经网络法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E6%8E%A8%E7%90%86%E6%B3%95%EF%BC%88%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%B3%95%EF%BC%89"><span class="toc-number">2.1.1.5.</span> <span class="toc-text">逻辑推理法（人工智能法）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E7%9F%A2%E9%87%8F%E5%92%8C%E7%89%B9%E5%BE%81%E7%A9%BA%E9%97%B4"><span class="toc-number">2.2.</span> <span class="toc-text">特征矢量和特征空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E7%9F%A2%E9%87%8F%E7%9A%84%E6%8F%8F%E8%BF%B0"><span class="toc-number">2.3.</span> <span class="toc-text">随机矢量的描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-number">2.4.</span> <span class="toc-text">正态分布</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%81%9A%E7%B1%BB%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">聚类分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E7%B1%BB%E5%88%86%E6%9E%90%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">3.1.</span> <span class="toc-text">聚类分析的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E7%9B%B8%E4%BC%BC%E6%80%A7%E6%B5%8B%E5%BA%A6"><span class="toc-number">3.2.</span> <span class="toc-text">模式相似性测度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E6%B5%8B%E5%BA%A6-%E5%B7%AE%E5%80%BC%E6%B5%8B%E5%BA%A6"><span class="toc-number">3.2.1.</span> <span class="toc-text">距离测度(差值测度)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E4%BC%BC%E6%B5%8B%E5%BA%A6"><span class="toc-number">3.2.2.</span> <span class="toc-text">相似测度</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%92%E5%BA%A6%E7%9B%B8%E4%BC%BC%E7%B3%BB%E6%95%B0-%E5%A4%B9%E8%A7%92%E4%BD%99%E5%BC%A6"><span class="toc-number">3.2.2.1.</span> <span class="toc-text">角度相似系数(夹角余弦)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-number">3.2.2.2.</span> <span class="toc-text">相关系数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E6%95%B0%E7%9B%B8%E4%BC%BC%E7%B3%BB%E6%95%B0"><span class="toc-number">3.2.2.3.</span> <span class="toc-text">指数相似系数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D%E6%B5%8B%E5%BA%A6"><span class="toc-number">3.2.3.</span> <span class="toc-text">匹配测度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E7%B1%BB%E9%97%B4%E8%B7%9D%E7%A6%BB"><span class="toc-number">3.3.</span> <span class="toc-text">类的定义与类间距离</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E9%97%B4%E8%B7%9D%E7%A6%BB%E6%B5%8B%E5%BA%A6%E6%96%B9%E6%B3%95"><span class="toc-number">3.3.1.</span> <span class="toc-text">类间距离测度方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E7%B1%BB%E7%9A%84%E5%87%86%E5%88%99%E5%87%BD%E6%95%B0"><span class="toc-number">3.3.2.</span> <span class="toc-text">聚类的准则函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E7%B1%BB%E7%9A%84%E7%AE%97%E6%B3%95"><span class="toc-number">3.4.</span> <span class="toc-text">聚类的算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E8%81%9A%E7%B1%BB%E6%96%B9%E6%B3%95"><span class="toc-number">3.4.1.</span> <span class="toc-text">简单聚类方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E6%9C%80%E5%B0%8F%E8%B7%9D%E7%A6%BB%E6%B3%95"><span class="toc-number">3.4.2.</span> <span class="toc-text">最大最小距离法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%B1%E7%B3%BB%E8%81%9A%E7%B1%BB%E6%B3%95"><span class="toc-number">3.4.3.</span> <span class="toc-text">谱系聚类法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%81%9A%E7%B1%BB%E6%B3%95"><span class="toc-number">3.4.4.</span> <span class="toc-text">动态聚类法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C%E5%9D%87%E5%80%BC%E6%B3%95"><span class="toc-number">3.4.4.1.</span> <span class="toc-text">C均值法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%B9%E8%BF%9B%E7%9A%84C%E5%9D%87%E5%80%BC%E6%B3%95"><span class="toc-number">3.4.4.2.</span> <span class="toc-text">改进的C均值法</span></a></li></ol></li></ol></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2019/11/10/T7Mu8Aod3egmC4Q.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Leonlist's Blog</a></span><span class="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">模式识别基础</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-12-09T10:34:31.000Z" title="Created 2020-12-09 18:34:31">2020-12-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2020-12-09T12:14:13.081Z" title="Updated 2020-12-09 20:14:13">2020-12-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Study/">Study</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><h2 id="特征值与特征向量"><a href="#特征值与特征向量" class="headerlink" title="特征值与特征向量"></a>特征值与特征向量</h2><p>设<strong>A</strong>是<strong>n</strong>阶方阵，如果存在常数<script type="math/tex">\lambda</script>及n维非零向量<strong>x</strong>，使得<strong><script type="math/tex">Ax=\lambda x</script></strong>，则称<script type="math/tex">\lambda</script>是矩阵<strong>A</strong>的特征值，x是A属于特征值<script type="math/tex">\lambda</script>的特征向量。</p>
+<p>如果把矩阵看作是运动，那么特征值就是运动的速度，特征向量就是运动的方向。</p>
+<p>特征向量在一个矩阵的作用下作伸缩运动，伸缩的幅度由特征值确定。特征值大于1，所有属于此特征值的特征向量变长；特征值大于0小于1，特征向量缩短；特征值小于0，特征向量缩过了界，反方向到原点那边去了。</p>
+<p>特征空间包含所有的特征向量。</p>
+<h1 id="引论"><a href="#引论" class="headerlink" title="引论"></a>引论</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>模式识别(Pattern Recognition)：</strong>确定一个样本的类别属性（模式类）的过程，即把某一样本归属于多个类型中的某个类型。</p>
+<p><strong>特征(Features)：</strong>能描述模式特性的量（测量值）。在统计模式识别方法中，通常用一个矢量<strong>x</strong>表示，称为特征矢量。</p>
+<p><strong>模式识别三大任务：</strong></p>
+<ul>
+<li><strong>模式采集：</strong>从客观世界（对象空间）到模式空间的过程称为模式采集。</li>
+<li><strong>特征提取和特征选择：</strong>由模式空间到特征空间的变换和选择</li>
+<li><strong>类型判别：</strong>特征空间到类型空间所作的操作。</li>
+</ul>
+<h3 id="模式识别的基本方法"><a href="#模式识别的基本方法" class="headerlink" title="模式识别的基本方法"></a>模式识别的基本方法</h3><h4 id="统计模式识别"><a href="#统计模式识别" class="headerlink" title="统计模式识别"></a><strong>统计模式识别</strong></h4><p><strong>模式描述方法：</strong>特征向量 </p>
+<p><strong>模式判定：</strong>模式类用条件概率分布<strong>P(X/wi)</strong>表示,m类就有m个分布，然后判定未知模式属于哪一个分布。</p>
+<p><strong>主要方法：</strong>线性、非线性分类、贝叶斯决策、聚类分析</p>
+<p><strong>主要优点：</strong></p>
+<ul>
+<li>比较成熟</li>
+<li>能考虑干扰噪声等影响（抗干扰）</li>
+<li>识别模式基元能力强</li>
+</ul>
+<p><strong>主要缺点：</strong></p>
+<ul>
+<li>对结构复杂的模式抽取特征困难</li>
+<li>不能反映模式的结构特征，难以描述模式的性质</li>
+<li>难以从整体角度考虑识别问题</li>
+</ul>
+<h4 id="句法模式识别"><a href="#句法模式识别" class="headerlink" title="句法模式识别"></a><strong>句法模式识别</strong></h4><p><strong>模式描述方法：</strong>符号串，树，图</p>
+<p><strong>模式判定：</strong>是一种语言，用一个文法表示一个类，m类就有m个文法，然后判定未知模式遵循哪一个文法。</p>
+<p><strong>主要方法：</strong>自动机技术、CYK剖析算法、Early算法、转移图法</p>
+<p><strong>主要优点：</strong></p>
+<ul>
+<li>识别方便，可以从简单的基元开始，由简至繁。</li>
+<li>能反映模式的结构特征，能描述模式的性质。</li>
+<li>对图象畸变的抗干扰能力较强。</li>
+</ul>
+<p><strong>主要缺点：</strong>当存在干扰及噪声时，抽取特征基元困难，且易失误。</p>
+<h4 id="模糊模式识别"><a href="#模糊模式识别" class="headerlink" title="模糊模式识别"></a><strong>模糊模式识别</strong></h4><p><strong>模式描述方法：</strong>模糊集合</p>
+<p><strong>模式判定：</strong>是一种集合运算。用隶属度将模糊集合划分为若干子集， m类就有m个子集，然后根据择近原则分类。</p>
+<p><strong>主要方法：</strong>模糊统计法、二元对比排序法、推理法、模糊集运算规则、模糊矩阵</p>
+<p><strong>主要优点：</strong> 由于隶属度函数作为样本与模板间相似程度的度量，故往往能反映整体的与主体的特征，从而允许样本有相当程度的干扰与畸变。</p>
+<p><strong>主要缺点：</strong>准确合理的隶属度函数往往难以建立，故限制了它的应用。</p>
+<h4 id="人工神经网络法"><a href="#人工神经网络法" class="headerlink" title="人工神经网络法"></a><strong>人工神经网络法</strong></h4><p><strong>模式描述方法：</strong>以不同活跃度表示的输入节点集（神经元）</p>
+<p><strong>模式判定：</strong>是一个非线性动态系统。通过对样本的学习建立起记忆，然后将未知模式判决为其最接近的记忆。</p>
+<p><strong>主要方法：</strong>BP模型、HOP模型、高阶网</p>
+<p><strong>主要优点：</strong>可处理一些环境信息十分复杂，背景知识不清楚，推理规则不明确的问题。允许样本有较大的缺损、畸变。</p>
+<p><strong>主要缺点：</strong>模型在不断丰富与完善中，目前能识别的模式类还不够多。</p>
+<h4 id="逻辑推理法（人工智能法）"><a href="#逻辑推理法（人工智能法）" class="headerlink" title="逻辑推理法（人工智能法）"></a><strong>逻辑推理法（人工智能法）</strong></h4><p><strong>模式描述方法：</strong>字符串表示的事实</p>
+<p><strong>模式判定：</strong>是一种布尔运算。从事实出发运用一系列规则，推理得到不同结果，m个类就有m个结果。</p>
+<p><strong>主要方法：</strong>产生式推理、语义网推理、框架推理</p>
+<p><strong>主要优点：</strong>已建立了关于知识表示及组织，目标搜索及匹配的完整体系。对需要众多规则的推理达到识别目标确认的问题，有很好的效果。</p>
+<p><strong>主要缺点：</strong>样本有缺损，背景不清晰，规则不明确甚至有歧义时，效果不好。</p>
+<h2 id="特征矢量和特征空间"><a href="#特征矢量和特征空间" class="headerlink" title="特征矢量和特征空间"></a>特征矢量和特征空间</h2><h2 id="随机矢量的描述"><a href="#随机矢量的描述" class="headerlink" title="随机矢量的描述"></a>随机矢量的描述</h2><h2 id="正态分布"><a href="#正态分布" class="headerlink" title="正态分布"></a>正态分布</h2><h1 id="聚类分析"><a href="#聚类分析" class="headerlink" title="聚类分析"></a><strong>聚类分析</strong></h1><h2 id="聚类分析的概念"><a href="#聚类分析的概念" class="headerlink" title="聚类分析的概念"></a><strong>聚类分析的概念</strong></h2><p><strong>基本思想</strong></p>
+<ul>
+<li>相似的归为一类</li>
+<li>模式相似性的度量和聚类算法</li>
+<li>无监督分类</li>
+</ul>
+<p><strong>特征量的类型</strong></p>
+<ul>
+<li>物理量—（重量、长度、速度）</li>
+<li>次序量—（等级、技能、学识）</li>
+<li>名义量—（性别、状态、种类）</li>
+</ul>
+<p><strong>方法的有效性：</strong>取决于分类算法和特征点分布情况的匹配。</p>
+<p><strong>分类无效时的情况：</strong></p>
+<ul>
+<li>特征选取不当使分类无效</li>
+<li>特征选取不足可能使不同类别的模式判为一类</li>
+<li>特征选取过多可能无益反而有害，增加分析负担并使分析效果变差</li>
+<li>量纲选取不当</li>
+</ul>
+<p><strong>聚类过程遵循的基本步骤：</strong></p>
+<ol>
+<li><p>特征选择(feature selection)</p>
+<p>尽可能多地包含任务关心的信息</p>
+</li>
+<li><p>近邻测度(proximity measure)</p>
+<p>定量测定两特征如何“相似”或“不相似”</p>
+</li>
+<li><p>聚类准则（clustering criterion）</p>
+<p>以蕴涵在数据集中类的类型为基础</p>
+</li>
+<li><p>聚类算法（clustering algorithm）</p>
+<p>按近邻测度和聚类准则揭示数据集的聚类结构</p>
+</li>
+<li><p>结果验证（validation of the results）</p>
+<p>常用逼近检验验证聚类结果的正确性</p>
+</li>
+<li><p>结果判定（interpretation of the results）</p>
+<p>由专家用其他方法判定结果的正确性</p>
+</li>
+</ol>
+<p><strong>聚类应用的四个基本方向</strong></p>
+<ol>
+<li>减少数据</li>
+<li>假说生成</li>
+<li>假说检验</li>
+<li>基于分组的预测</li>
+</ol>
+<h2 id="模式相似性测度"><a href="#模式相似性测度" class="headerlink" title="模式相似性测度"></a><strong>模式相似性测度</strong></h2><p><strong>用于描述各模式之间特征的相似程度</strong>：距离测度，相似测度，匹配测度</p>
+<h3 id="距离测度-差值测度"><a href="#距离测度-差值测度" class="headerlink" title="距离测度(差值测度)"></a><strong>距离测度(差值测度)</strong></h3><p><strong>欧氏(Euclidean)距离：</strong></p>
+<script type="math/tex; mode=display">d(x,y)=||x-y||=[\sum^{n}\limits_{i=1}{(x_i-y_i)^2}]^{1/2}</script><p><strong>绝对值距离(街坊距离或Manhattan距离)：</strong></p>
+<script type="math/tex; mode=display">d(x,y)==\sum^{n}\limits_{i=1}{|x_i-y_i|}</script><p><strong>马氏(Mahalanobis)距离</strong></p>
+<script type="math/tex; mode=display">d^2(x,y)==\sum^{n}\limits_{i=1}{|x_i-y_i|}</script><p><strong>(注意！马氏距离对一切非奇异线性变换都是不变的，这说明它不受特征量纲选择的影响，并且是平移不变的。)</strong></p>
+<h3 id="相似测度"><a href="#相似测度" class="headerlink" title="相似测度"></a>相似测度</h3><p>测度基础：以两矢量的方向是否相近作为考虑的基础,矢量长度并不不重要。</p>
+<h4 id="角度相似系数-夹角余弦"><a href="#角度相似系数-夹角余弦" class="headerlink" title="角度相似系数(夹角余弦)"></a>角度相似系数(夹角余弦)</h4><h4 id="相关系数"><a href="#相关系数" class="headerlink" title="相关系数"></a>相关系数</h4><h4 id="指数相似系数"><a href="#指数相似系数" class="headerlink" title="指数相似系数"></a>指数相似系数</h4><h3 id="匹配测度"><a href="#匹配测度" class="headerlink" title="匹配测度"></a><strong>匹配测度</strong></h3><p>当特征只有两个状态（0，1）时，常用匹配测度。0表示无此特征1表示有此特征。故称之为二值特征。</p>
+<h2 id="类的定义与类间距离"><a href="#类的定义与类间距离" class="headerlink" title="类的定义与类间距离"></a>类的定义与类间距离</h2><h3 id="类间距离测度方法"><a href="#类间距离测度方法" class="headerlink" title="类间距离测度方法"></a>类间距离测度方法</h3><ul>
+<li>最近距离法</li>
+<li>最远距离法</li>
+<li>中间距离法</li>
+<li>重心距离法</li>
+<li>平均距离法</li>
+<li>离差平方和法</li>
+</ul>
+<h3 id="聚类的准则函数"><a href="#聚类的准则函数" class="headerlink" title="聚类的准则函数"></a><strong>聚类的准则函数</strong></h3><p><strong>判别分类结果好坏的一般标准：</strong>类内距离小，类间距离大。</p>
+<p><strong>类内距离准则</strong></p>
+<p><strong>类间距离准则</strong></p>
+<h2 id="聚类的算法"><a href="#聚类的算法" class="headerlink" title="聚类的算法"></a>聚类的算法</h2><p><strong>归纳起来就是三大类：</strong></p>
+<ol>
+<li>按最小距离原则简单聚类方法</li>
+<li>按最小距离原则进行两类合并的方法</li>
+<li>依据准则函数动态聚类方法</li>
+</ol>
+<h3 id="简单聚类方法"><a href="#简单聚类方法" class="headerlink" title="简单聚类方法"></a><strong>简单聚类方法</strong></h3><p>针对具体问题确定相似性阈值，将模式到各聚类中心间的距离与阈值比较，当大于阈值时该模式就作为另一类的类心，小于阈值时按最小距离原则将其分划到某一类中。</p>
+<p>这类算法运行中<strong>模式的类别及类的中心</strong>一旦确定将不会改变。</p>
+<p><strong>算法思想：</strong></p>
+<p>计算模式特征矢量到聚类中心的距离并和门限T比较，决定归属该类或作为新的一类中心。这种算法通常选择欧氏距离。</p>
+<h3 id="最大最小距离法"><a href="#最大最小距离法" class="headerlink" title="最大最小距离法"></a><strong>最大最小距离法</strong></h3><p>首先视各模式自成一类,然后将距离最小的两类合并成一类,不断地重复这个过程，直到成为两类为止。</p>
+<p>这类算法运行中，类心不断地修正，但模式类别一旦指定后就不再改变，就是模式一旦划为一类后就不再被分划开，这类算法也称为谱系聚类法。</p>
+<p><strong>算法思想：</strong></p>
+<p>在模式特征矢量集中以最大距离原则选取新的聚类中心。以最小距离原则进行模式分类。这种方法通常也使用欧式距离。</p>
+<h3 id="谱系聚类法"><a href="#谱系聚类法" class="headerlink" title="谱系聚类法"></a>谱系聚类法</h3><p>按最小距离原则不断进行两类合并</p>
+<p>算法思想：</p>
+<p>首先将N个模式视作各自成为一类，然后计算类与类之间的距离，选择距离最小的一对合并成一个新类，计算在新的类别分划下各类之间的距离，再将距离最近的两类合并，直至所有模式聚成两类为止。</p>
+<h3 id="动态聚类法"><a href="#动态聚类法" class="headerlink" title="动态聚类法"></a><strong>动态聚类法</strong></h3><p>设定一些分类的控制参数，定义一个能表征聚类结果优劣的准则函数，聚类过程就是使准则函数取极值的优化过程。</p>
+<p>算法运行中，类心不断地修正，各模式的类别的指定也不断地更改。这类方法有—<strong>C均值法</strong>、ISODATA法等。</p>
+<h4 id="C均值法"><a href="#C均值法" class="headerlink" title="C均值法"></a>C均值法</h4><p><strong>算法思想：</strong></p>
+<p>该方法取定C个类别和选取C个初始聚类中心，按最小距离原则将各模式分配到C类中的某一类，之后不断地计算类心和调整各模式的类别，最终使各模式到其判属类别中心的距离平方之和最小。</p>
+<h4 id="改进的C均值法"><a href="#改进的C均值法" class="headerlink" title="改进的C均值法"></a>改进的C均值法</h4><p>对给定的待分类模式集，进行初始划分产生c类</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Leonlist</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/12/09/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB%E5%9F%BA%E7%A1%80/">http://yoursite.com/2020/12/09/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB%E5%9F%BA%E7%A1%80/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB%E5%9F%BA%E7%A1%80/">模式识别基础</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2019/11/10/T7Mu8Aod3egmC4Q.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2020/12/09/%E5%85%AD%E7%BA%A7/"><img class="next-cover" data-lazy-src="https://i.loli.net/2019/11/10/3wkO7fuQpgda6vz.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">六级</div></div></a></div></nav></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 By Leonlist</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
