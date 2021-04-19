@@ -1,0 +1,236 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>软件项目管理 | Leonlist's Blog</title><meta name="description" content="Reading 1Things You Should Never Do, Part I 这是国外的老程序员 Joel Spolsky 在2000年写的文章。 更详尽的带图表的分析: Why You Should (Almost) Never Rewrite Code – A Graphical Guide  Avram Joel Spolsky生于1965年，他是一位软件工程师和作家。他是“Joe"><meta name="keywords" content="SPM"><meta name="author" content="Leonlist"><meta name="copyright" content="Leonlist"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/logo.jpg"><link rel="canonical" href="http://yoursite.com/2021/04/16/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="软件项目管理"><meta property="og:url" content="http://yoursite.com/2021/04/16/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"><meta property="og:site_name" content="Leonlist's Blog"><meta property="og:description" content="Reading 1Things You Should Never Do, Part I 这是国外的老程序员 Joel Spolsky 在2000年写的文章。 更详尽的带图表的分析: Why You Should (Almost) Never Rewrite Code – A Graphical Guide  Avram Joel Spolsky生于1965年，他是一位软件工程师和作家。他是“Joe"><meta property="og:image" content="https://i.loli.net/2019/11/10/T7Mu8Aod3egmC4Q.png"><meta property="article:published_time" content="2021-04-16T00:45:47.000Z"><meta property="article:modified_time" content="2021-04-16T01:54:15.361Z"><meta name="twitter:card" content="summary"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  bookmark: {
+    message_prev: 'Press',
+    message_next: 'to bookmark this page'
+  },
+  runtime: '',
+  last_push_date: {"zeroDay":"Today","suffix":"days ago"},
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+      const now = new Date()
+      const expiryDay = ttl * 86400000
+      const item = {
+        value: value,
+        expiry: now.getTime() + expiryDay,
+      }
+      localStorage.setItem(key, JSON.stringify(item))
+    },
+  
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2021-04-16 09:54:15'
+}</script><noscript><style type="text/css">
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="/img/logo.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">39</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">20</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Reading-1"><span class="toc-number">1.</span> <span class="toc-text">Reading 1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reading-2"><span class="toc-number">2.</span> <span class="toc-text">Reading 2</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2019/11/10/T7Mu8Aod3egmC4Q.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Leonlist's Blog</a></span><span class="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">软件项目管理</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-04-16T00:45:47.000Z" title="Created 2021-04-16 08:45:47">2021-04-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-04-16T01:54:15.361Z" title="Updated 2021-04-16 09:54:15">2021-04-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Study/">Study</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="Reading-1"><a href="#Reading-1" class="headerlink" title="Reading 1"></a>Reading 1</h1><p><a href="https://link.zhihu.com/?target=http%3A//www.joelonsoftware.com/articles/fog0000000069.html">Things You Should Never Do, Part I</a></p>
+<p>这是国外的老程序员 Joel Spolsky 在2000年写的文章。</p>
+<p>更详尽的带图表的分析:</p>
+<p><a href="https://link.zhihu.com/?target=http%3A//vibratingmelon.com/2011/06/10/why-you-should-almost-never-rewrite-code-a-graphical-guide/">Why You Should (Almost) Never Rewrite Code – A Graphical Guide</a></p>
+<hr>
+<p>Avram Joel Spolsky生于1965年，他是一位软件工程师和作家。他是“Joel on Software”博客的作者。他从1991年到1994年间担任Microsoft Excel团队的项目经理。在2000年，他创立了Fog Creek软件并开启了“<a target="_blank" rel="noopener" href="http://www.joelonsoftware.com/index.html">Joel on Software</a>”博客。2008年，他和Jeff Atwood一起启动了如今极为成功的Stack Overflow程序员问答网站。他们用Stack Exchange软件产品作为<a target="_blank" rel="noopener" href="http://stackoverflow.com/">Stack Overflow</a>的引擎。现如今<a target="_blank" rel="noopener" href="http://stackexchange.com/">Stack Exchange</a>网络已经包含了91个站点。</p>
+<hr>
+<p>他在这篇文章的论点来源于一个简单的事实：<br><strong>It’s harder to read code than to write it.</strong><br><strong>写代码容易，读代码难。</strong></p>
+<p>在开头，他批评网景公司<strong>犯了的最严重的战略错误</strong>——<strong>他们决定从头开始重写代码</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">由于网景当时的极度成功，公司规模扩展很快，为了应对开发的需求而收购了一家大型软件开发公司。但这家被收购公司的高层以及开发人员做了一系列愚蠢决定，包括使用当时如麻花一般的 C++ 代替 C，削减支持平台，优先发布 Windows 版本浏览器等，最后造成了新版本发布遥遥无期，程序质量不高等一系列问题，失去了对其他浏览器（包括IE）功能上和性能上的绝对优势，而结果就是被用户抛弃。</span><br></pre></td></tr></table></figure>
+<p>作者的观点主要有：</p>
+<ol>
+<li>重写的代码即便能完全达到旧代码的所有功能、性能需求，为产品带来的竞争力也只有边际提升。（这个很好理解，因为代码的规范性和清晰度对产品的功能性没有直接帮助，只能降低远期的维护成本）</li>
+<li>由于重写代码过程中需要花费额外的钱和时间，可能会出现一些意外状况，比如预算不够了，核心程序员离职了，或是重写的产品没有达到原有产品的所有功能和性能需求，那么这个结果可能是灾难性的，重写的产品要么胎死腹中，要么市场竞争力反而更低了。</li>
+<li>在重写期间，由于竞争对手不会停滞不前并且您无法开发新功能，因此产品的竞争力通常会下降。而且重写花费的时间比预期的要长得多，连锁效应使产品竞争力下降的时间更长。对于小公司来说，这可能是致命的。</li>
+</ol>
+<p>上面三个中的任何一个都可能致命，但是所有三个问题肯定都是致命的，产品的竞争力可能永远不会恢复。</p>
+<p>如果公司的项目或产品代码混乱到无法再加入新功能或提升性能，跟时代严重脱节怎么办，那么应用以上原则，这时候既然这个项目已经快死了，那么放到新项目里重写显然是最合理的选择。</p>
+<h1 id="Reading-2"><a href="#Reading-2" class="headerlink" title="Reading 2"></a>Reading 2</h1><p> 同样是 Joel Spolsky 在2000年写的文章。</p>
+<p><a target="_blank" rel="noopener" href="https://www.joelonsoftware.com/2000/08/09/the-joel-test-12-steps-to-better-code/">The Joel Test: 12 Steps to Better Code</a></p>
+<hr>
+<p>他用这十二条来评估软件团队的质量，大多数软件组织的运行得分为2或3，像 Microsoft 这样的公司的得分为12。</p>
+<ol>
+<li>Do you use source control?</li>
+<li>Can you make a build in one step?</li>
+<li>Do you make daily builds?</li>
+<li>Do you have a bug database?</li>
+<li>Do you fix bugs before writing new code?</li>
+<li>Do you have an up-to-date schedule?</li>
+<li>Do you have a spec?</li>
+<li>Do programmers have quiet working conditions?</li>
+<li>Do you use the best tools money can buy?</li>
+<li>Do you have testers?</li>
+<li>Do new candidates write code during their interview?</li>
+<li>Do you do hallway usability testing?</li>
+</ol>
+<hr>
+<p><strong>1.您是否使用源代码管理？</strong></p>
+<p>如果您没有源代码控制，那么您将不得不尝试使程序员们一起工作。程序员无法知道其他人做了什么。错误不能轻易回滚。</p>
+<p>在源代码层面使其易于管理、维护，同时降低核心技术泄密风险。</p>
+<p><strong>2.你们可以把整个系统从源码到CD映像文件一步建成吗？</strong></p>
+<p>这句话问的问题是：从你们最新的源码开始到建立起能够交出去的最后文件，你们有多少步骤要做？ 一个好的团队应该有一个批处理程序一步便可将所有的工作做完，像把源文件提取出来，跟据不同的语言版本要求（英文版，中文版），和各种编译开关（#ifdef）进行编译，联接成可执行文件，标上版本号，打包成CD映像文件或直接送到网站上去，等等等等。</p>
+<p><strong>3.您是否进行日常构建？</strong></p>
+<p>在微软软件开发中，每日构建是最重要的过程之一，被称为微软产品开发的“心跳”。简单来看，每天构建系统将整个产品解决方案完整构建一遍，生成的目标文件和安装文件被放置在一个共享位置。接着，安装文件被自动部署到release server上，随后可以自动运行BVT（build verification test），并将所有结果寄送每个team member的信箱。</p>
+<p><strong>4.您是否有 bug 数据库？</strong></p>
+<p>如果您正在开发代码，即使是一个团队，也没有列出代码中所有已知错误的有组织的数据库，那么您将交付低质量的代码。</p>
+<p><strong>5.在编写新代码之前，您是否修复了 bug？</strong></p>
+<p>要立即修复 bug 的原因之一：因为它花费的时间更少。还有另一个原因，这与以下事实有关：预测编写新代码要比修复现有 bug 要花多长时间。例如，如果我要求您预测编写代码以对列表进行排序所需的时间，那么您可以给我一个很好的估计。但是，如果我问你如何预测这将需要多长时间来修复 bug：如果安装Internet Explorer 5.5您的代码不工作，你甚至无法猜测的，因为你不知道（定义）是什么导致 bug。跟踪可能需要3天，或者可能需要2分钟。</p>
+<p>这意味着如果您的日程安排中有许多尚待修复的 bug，则该日程安排是不可靠的。但是，如果您已经解决了所有已知的 bug，而剩下的只是新代码，那么您的日程安排将更加准确。</p>
+<p>将 bug 计数保持为零的另一个很棒的事情是，您可以更快地响应竞争。一些程序员认为这是使产品随时准备就的准备*。然后，如果您的竞争对手推出了一种吸引用户的杀手级新功能，则您可以实施该功能并当场发货，而无需修复大量累积的 bug。</p>
+<p><strong>6.您有最新的时间表吗？</strong></p>
+<p>这使我们按计划进行。如果您的代码对企业至关重要，则有很多原因说明知道何时完成代码对企业很重要。</p>
+<p>制定时间表的另一个关键之处在于，它迫使您决定要执行的功能，然后迫使您选择最不重要的功能并将其剪切掉，而不是陷入特征<a target="_blank" rel="noopener" href="http://www.netmeg.net/jargon/terms/c/creeping_featuritis.html">成熟度</a>（又称范围蠕动）。</p>
+<p><strong>7.您有写软件规格说明书（SPEC）吗？</strong></p>
+<p>在产品的前期设计过程中，如果你发现了一些问题，你可以轻易地在说明书里该几行字就行了。一旦进入了写程序的阶段，解决问题的代价就要高得多了。</p>
+<p>没有产品开发详细说明书就开始写程序，往往会导致程序写的乱七八糟，而且左拖右拖不能交付使用。</p>
+<p>不论采用以上哪种方法，道理只有一个：在没有产品开发详细说明书之前，决不可写程序。</p>
+<p><strong>8.程序员有安静的工作条件吗？</strong></p>
+<p>通过为知识工作者提供空间，安静和私密性，可以广泛地记录生产率的提高。</p>
+<p><strong>9.您是否使用金钱可以买到的最好的工具？</strong></p>
+<p>要给予程序员尽可能好的条件</p>
+<p><strong>10.您有测试员吗？</strong></p>
+<p>需要有测试员来检测产品的漏洞</p>
+<p><strong>11.新候选人在面试中是否写代码？</strong></p>
+<p>通过写代码了解程序员的能力，而不是看似漂亮的简历和问几个简单的问题（如CreateDialog()和DialogBox()有什么区别？这种问题，查一下帮助文件就知道了）</p>
+<p><strong>12.您是否进行走廊可用性测试？</strong></p>
+<p>也就是随便抓一个人来，进行测试。</p>
+<p>走廊实用性测试对于企业产品测试来讲提供的反馈比招募来做测试得出的结论要好很多，而且很多时候是完全相反的结论。</p>
+<p>但现在很多企业都不做走廊测试了，而改用poll这种电子方式在Social Media发布，让用户选择。原因是走廊测试这种方法的效率不高。</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Leonlist</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://yoursite.com/2021/04/16/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">http://yoursite.com/2021/04/16/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/SPM/">SPM</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2019/11/10/T7Mu8Aod3egmC4Q.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/16/Online-Quiz/"><img class="prev-cover" data-lazy-src="https://i.loli.net/2019/11/10/egVhFWopA5mP2Hk.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Online-Quiz</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/14/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/"><img class="next-cover" data-lazy-src="https://i.loli.net/2019/11/10/71wgohfPHqXRbG9.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">编译原理</div></div></a></div></nav></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Leonlist</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
